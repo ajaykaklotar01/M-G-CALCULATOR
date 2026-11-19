@@ -2,7 +2,7 @@
   "use strict";
   const $ = (id) => document.getElementById(id);
   const lengthInput=$("length"), widthInput=$("width"), piecesInput=$("pieces");
-  const lengthFeet=$("lengthFeet"), widthFeet=$("widthFeet"), perPiece=$("perPiece");
+  const perPiece=$("perPiece");
   const totalArea=$("totalArea"), pieceCount=$("pieceCount"), error=$("error");
 
   // Apply the exact inclusive boundaries: 1–3, >3–6, >6–9, >9–12 inches.
@@ -25,7 +25,6 @@
     const l=Number(lengthInput.value), w=Number(widthInput.value), p=Number(piecesInput.value);
     error.textContent="";
     if(lengthInput.value===""||widthInput.value==="") {
-      lengthFeet.textContent=widthFeet.textContent="—";
       perPiece.textContent="— sq ft"; totalArea.innerHTML='0.00 <span>sq ft</span>';
       pieceCount.textContent=piecesInput.value||"1"; return;
     }
@@ -36,7 +35,6 @@
       error.textContent="Number of pieces must be a whole number (at least 1)."; return;
     }
     const lf=inchesToFeet(l), wf=inchesToFeet(w), each=lf*wf, total=each*p;
-    lengthFeet.textContent=format(lf); widthFeet.textContent=format(wf);
     perPiece.textContent=format(each)+" sq ft";
     totalArea.innerHTML=format(total)+' <span>sq ft</span>';
     pieceCount.textContent=String(p);
