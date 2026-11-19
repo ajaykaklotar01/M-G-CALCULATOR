@@ -48,3 +48,11 @@
 .measurement-grid{align-items:start}
 .measurement-grid .row-result-field .conversion-info{min-height:30px;text-align:center}
 .measurement-grid .row-result-field .conversion-info-note{display:none}
+
+
+/* Final mobile alignment fix: keep the explanatory dimensions centered in the result column. */
+.measurement-grid .row-result-field{display:flex;flex-direction:column;align-items:stretch}
+.measurement-grid .row-result-field>span:first-child{text-align:left}
+.measurement-grid .row-result-field .row-result-box{width:100%}
+.measurement-grid .row-result-field .conversion-info{display:block;min-height:0;margin:9px 0 0;text-align:center;white-space:normal;line-height:1.4}
+.measurement-grid .row-result-field .conversion-info-note{display:none!important}
