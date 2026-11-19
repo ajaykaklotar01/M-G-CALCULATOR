@@ -38,3 +38,7 @@
 .grand-total-box strong{font-family:Georgia,"Times New Roman",serif;font-size:25px;font-weight:500;color:var(--sage-dark)}
 .grand-total-box strong span{font-size:12px}
 @media(max-width:560px){.measurement-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px 10px}.measurement-card{padding:14px}.measurement-grid .input-wrap,.row-result-box{height:49px}.row-result-box strong{font-size:18px}}
+
+/* Informational converted-dimension hint; does not affect calculations. */
+.conversion-info{margin:7px 0 0;color:var(--sage-dark);font-size:10px;font-weight:600;line-height:1.45}
+.conversion-info-note{display:block;margin-top:2px;color:var(--muted);font-size:9px;font-weight:400}
