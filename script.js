@@ -5,11 +5,15 @@
   const lengthFeet=$("lengthFeet"), widthFeet=$("widthFeet"), perPiece=$("perPiece");
   const totalArea=$("totalArea"), pieceCount=$("pieceCount"), error=$("error");
 
-  // Preserve whole feet; round every remaining inch UP to the next 3-inch step.
+  // Apply the exact inclusive boundaries: 1–3, >3–6, >6–9, >9–12 inches.
   function inchesToFeet(inches) {
-    const wholeFeet=Math.floor(inches/12);
-    const remainder=inches-wholeFeet*12;
-    return wholeFeet+Math.ceil(remainder/3)*0.25;
+    const wholeFeet = Math.floor(inches / 12);
+    const remainder = inches - wholeFeet * 12;
+    if (remainder === 0) return wholeFeet;
+    if (remainder <= 3) return wholeFeet + 0.25;
+    if (remainder <= 6) return wholeFeet + 0.50;
+    if (remainder <= 9) return wholeFeet + 0.75;
+    return wholeFeet + 1.00;
   }
   // Standard half-up rounding for the final two-decimal display.
   function roundToTwo(value) {
