@@ -42,3 +42,9 @@
 /* Informational converted-dimension hint; does not affect calculations. */
 .conversion-info{margin:7px 0 0;color:var(--ink);font-size:10px;font-weight:400;line-height:1.45}
 .conversion-info-note{display:block;margin-top:2px;color:var(--muted);font-size:9px;font-weight:400}
+
+
+/* Keep the measurement row aligned and reserve space for the optional info line. */
+.measurement-grid{align-items:start}
+.measurement-grid .row-result-field .conversion-info{min-height:30px;text-align:center}
+.measurement-grid .row-result-field .conversion-info-note{display:none}
