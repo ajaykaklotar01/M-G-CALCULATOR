@@ -2,3 +2,14 @@
 
 /* UI layout update: keep the pieces control beside the live result. */
 .pieces-result-row{display:grid;grid-template-columns:minmax(125px,.72fr) minmax(0,1.8fr);gap:14px;align-items:stretch;margin-top:18px}.pieces-result-row .pieces-field{margin-top:0;max-width:none;align-self:start}.pieces-result-row .result-panel{margin-top:0;min-width:0}.pieces-result-row .result-main>div:first-child>strong{font-size:clamp(27px,5vw,40px)}.pieces-result-row .result-foot{line-height:1.5}@media(max-width:420px){.pieces-result-row{grid-template-columns:minmax(105px,.72fr) minmax(0,1.5fr);gap:9px}.pieces-result-row .result-panel{padding:15px 12px}.pieces-result-row .result-top span{font-size:8px}.pieces-result-row .result-top strong{font-size:11px}.pieces-result-row .result-main>div:first-child>strong{font-size:29px}.pieces-result-row .result-main>div:first-child>strong span{font-size:12px}.pieces-result-row .piece-count strong{font-size:20px}.pieces-result-row .result-foot{font-size:8px}}
+
+
+/* Compact matching input/result fields. Calculation output styling only. */
+.pieces-result-row{grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.pieces-result-row .pieces-field{max-width:none;margin-top:0}
+.total-area-field>span:first-child{display:block;font-size:11px;font-weight:700;margin-bottom:9px;color:var(--sage-dark);letter-spacing:.35px}
+.total-area-box{height:51px;border:1px solid #dfe3dc;background:#fff;display:flex;align-items:center;padding:0 13px;min-width:0}
+.total-area-box strong{font-family:Georgia,"Times New Roman",serif;font-size:21px;font-weight:500;color:var(--sage-dark);white-space:nowrap}
+.total-area-box strong span{font-family:inherit;font-size:11px;color:var(--sage-dark)}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+@media(max-width:420px){.pieces-result-row{grid-template-columns:1fr 1fr;gap:10px}.total-area-box{padding:0 10px}.total-area-box strong{font-size:19px}.total-area-box strong span{font-size:10px}}
