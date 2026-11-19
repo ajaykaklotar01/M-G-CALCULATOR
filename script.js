@@ -43,4 +43,26 @@
     calculate(); lengthInput.focus();
   });
   calculate();
+
+  // Register the offline app shell. The first visit must be online so files can be cached.
+  const appStatus = $("appStatus");
+  function showAppStatus() {
+    if (!appStatus) return;
+    const label = appStatus.lastChild;
+    if (label) label.textContent = navigator.onLine ? " OFFLINE READY" : " WORKING OFFLINE";
+  }
+  window.addEventListener("online", showAppStatus);
+  window.addEventListener("offline", showAppStatus);
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("./sw.js")
+        .then(() => showAppStatus())
+        .catch(() => {
+          if (appStatus && navigator.onLine) appStatus.lastChild.textContent = " USE OFFLINE AFTER INSTALL";
+        });
+    });
+  } else if (appStatus) {
+    appStatus.lastChild.textContent = " BROWSER OFFLINE SUPPORT LIMITED";
+  }
+  showAppStatus();
 })();
