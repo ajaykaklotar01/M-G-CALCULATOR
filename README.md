@@ -5,9 +5,9 @@ A lightweight, mobile-friendly calculator for converting marble and granite dime
 ## Calculation method
 Convert each dimension separately, rounding any remaining inches UP in 3-inch steps:
 - 1–3 inches → 0.25 ft
-- 4–6 inches → 0.50 ft
-- 7–9 inches → 0.75 ft
-- 10–12 inches → 1.00 ft
+- More than 3 up to 6 inches → 0.50 ft
+- More than 6 up to 9 inches → 0.75 ft
+- More than 9 up to 12 inches → 1.00 ft
 
 Area per piece = converted length × converted width.  
 Total area = area per piece × number of pieces.
