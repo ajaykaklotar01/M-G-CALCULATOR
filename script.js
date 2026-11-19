@@ -35,7 +35,7 @@
         <label class="field"><span>Length <small>(inches)</small></span><span class="input-wrap"><input data-field="length" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 84"></span></label>
         <label class="field"><span>Width <small>(inches)</small></span><span class="input-wrap"><input data-field="width" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 8"></span></label>
         <label class="field"><span>Pieces</span><span class="input-wrap"><input data-field="pieces" type="number" inputmode="numeric" min="1" step="1" value="1"></span></label>
-        <div class="field row-result-field"><span>Result</span><div class="row-result-box"><strong data-field="result">— <span>sq ft</span></strong></div></div>
+        <div class="field row-result-field"><span>Result</span><div class="row-result-box"><strong data-field="result">— <span>sq ft</span></strong></div><p class="conversion-info" data-field="conversion-info"></p><small class="conversion-info-note">(For understanding only)</small></div>
       </div>
       <p class="row-error" data-field="error" role="alert"></p>`;
     measurementList.appendChild(card);
@@ -54,12 +54,14 @@
       const piecesInput = card.querySelector('[data-field="pieces"]');
       const result = card.querySelector('[data-field="result"]');
       const rowError = card.querySelector('[data-field="error"]');
+      const conversionInfo = card.querySelector('[data-field="conversion-info"]');
       const lengthValue = lengthInput.value;
       const widthValue = widthInput.value;
       const piecesValue = piecesInput.value;
 
       rowError.textContent = "";
       result.innerHTML = '— <span>sq ft</span>';
+      conversionInfo.textContent = "";
 
       if (lengthValue === "" && widthValue === "") return;
       if (lengthValue === "" || widthValue === "") {
@@ -89,6 +91,7 @@
       const areaPerPiece = convertedLength * convertedWidth;
       const rowTotal = areaPerPiece * pieces;
       result.innerHTML = format(rowTotal) + ' <span>sq ft</span>';
+      conversionInfo.textContent = `Length ${format(convertedLength)} ft × Width ${format(convertedWidth)} ft`;
       combinedTotal += rowTotal;
       completedRows++;
     });
