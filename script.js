@@ -1,10 +1,13 @@
 (() => {
   "use strict";
   const $ = (id) => document.getElementById(id);
-  const lengthInput=$("length"), widthInput=$("width"), piecesInput=$("pieces");
-  const lengthFeet=$("lengthFeet"), widthFeet=$("widthFeet"), perPiece=$("perPiece");
-  const totalArea=$("totalArea"), pieceCount=$("pieceCount"), error=$("error");
+  const measurementList = $("measurementList");
+  const grandTotal = $("grandTotal");
+  const error = $("error");
+  const addButton = $("addMeasurement");
+  let nextMeasurementId = 1;
 
+  // LOCKED ORIGINAL CONVERSION LOGIC — unchanged.
   // Apply the exact inclusive boundaries: 1–3, >3–6, >6–9, >9–12 inches.
   function inchesToFeet(inches) {
     const wholeFeet = Math.floor(inches / 12);
@@ -21,32 +24,89 @@
   }
   const format=(value)=>roundToTwo(value).toFixed(2);
 
-  function calculate() {
-    const l=Number(lengthInput.value), w=Number(widthInput.value), p=Number(piecesInput.value);
-    error.textContent="";
-    if(lengthInput.value===""||widthInput.value==="") {
-      lengthFeet.textContent=widthFeet.textContent="—";
-      perPiece.textContent="— sq ft"; totalArea.innerHTML='0.00 <span>sq ft</span>';
-      pieceCount.textContent=piecesInput.value||"1"; return;
-    }
-    if(!Number.isFinite(l)||!Number.isFinite(w)||l<=0||w<=0) {
-      error.textContent="Please enter a length and width greater than zero."; return;
-    }
-    if(!Number.isInteger(p)||p<1) {
-      error.textContent="Number of pieces must be a whole number (at least 1)."; return;
-    }
-    const lf=inchesToFeet(l), wf=inchesToFeet(w), each=lf*wf, total=each*p;
-    lengthFeet.textContent=format(lf); widthFeet.textContent=format(wf);
-    perPiece.textContent=format(each)+" sq ft";
-    totalArea.innerHTML=format(total)+' <span>sq ft</span>';
-    pieceCount.textContent=String(p);
+  function addMeasurement() {
+    const id = nextMeasurementId++;
+    const card = document.createElement("section");
+    card.className = "measurement-card";
+    card.dataset.measurementId = String(id);
+    card.innerHTML = `
+      <div class="measurement-card-heading"><span>INPUT ${id}</span></div>
+      <div class="measurement-grid">
+        <label class="field"><span>Length <small>(inches)</small></span><span class="input-wrap"><input data-field="length" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 84"></span></label>
+        <label class="field"><span>Width <small>(inches)</small></span><span class="input-wrap"><input data-field="width" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 8"></span></label>
+        <label class="field"><span>Pieces</span><span class="input-wrap"><input data-field="pieces" type="number" inputmode="numeric" min="1" step="1" value="1"></span></label>
+        <div class="field row-result-field"><span>Result</span><div class="row-result-box"><strong data-field="result">— <span>sq ft</span></strong></div></div>
+      </div>
+      <p class="row-error" data-field="error" role="alert"></p>`;
+    measurementList.appendChild(card);
+    card.querySelector('[data-field="length"]').focus();
+    calculateAll();
   }
-  [lengthInput,widthInput,piecesInput].forEach(el=>el.addEventListener("input",calculate));
-  $("reset").addEventListener("click",()=>{
-    lengthInput.value=""; widthInput.value=""; piecesInput.value="1";
-    calculate(); lengthInput.focus();
+
+  function calculateAll() {
+    let combinedTotal = 0;
+    let completedRows = 0;
+    let hasErrors = false;
+
+    measurementList.querySelectorAll(".measurement-card").forEach((card) => {
+      const lengthInput = card.querySelector('[data-field="length"]');
+      const widthInput = card.querySelector('[data-field="width"]');
+      const piecesInput = card.querySelector('[data-field="pieces"]');
+      const result = card.querySelector('[data-field="result"]');
+      const rowError = card.querySelector('[data-field="error"]');
+      const lengthValue = lengthInput.value;
+      const widthValue = widthInput.value;
+      const piecesValue = piecesInput.value;
+
+      rowError.textContent = "";
+      result.innerHTML = '— <span>sq ft</span>';
+
+      if (lengthValue === "" && widthValue === "") return;
+      if (lengthValue === "" || widthValue === "") {
+        rowError.textContent = "Enter both length and width.";
+        hasErrors = true;
+        return;
+      }
+
+      const length = Number(lengthValue);
+      const width = Number(widthValue);
+      const pieces = Number(piecesValue);
+      if (!Number.isFinite(length) || !Number.isFinite(width) || length <= 0 || width <= 0) {
+        rowError.textContent = "Length and width must be greater than zero.";
+        hasErrors = true;
+        return;
+      }
+      if (!Number.isInteger(pieces) || pieces < 1) {
+        rowError.textContent = "Pieces must be a whole number (at least 1).";
+        hasErrors = true;
+        return;
+      }
+
+      // Same original per-measurement calculation: convert each side,
+      // multiply converted dimensions, then multiply by number of pieces.
+      const convertedLength = inchesToFeet(length);
+      const convertedWidth = inchesToFeet(width);
+      const areaPerPiece = convertedLength * convertedWidth;
+      const rowTotal = areaPerPiece * pieces;
+      result.innerHTML = format(rowTotal) + ' <span>sq ft</span>';
+      combinedTotal += rowTotal;
+      completedRows++;
+    });
+
+    grandTotal.innerHTML = format(combinedTotal) + ' <span>sq ft</span>';
+    error.textContent = hasErrors ? "Please complete or correct the highlighted measurement before using the total." : "";
+  }
+
+  measurementList.addEventListener("input", calculateAll);
+  addButton.addEventListener("click", addMeasurement);
+  $("reset").addEventListener("click", () => {
+    measurementList.innerHTML = "";
+    nextMeasurementId = 1;
+    addMeasurement();
+    grandTotal.innerHTML = '0.00 <span>sq ft</span>';
+    error.textContent = "";
   });
-  calculate();
+  addMeasurement();
 
   // Register the offline app shell. The first visit must be online so files can be cached.
   const appStatus = $("appStatus");
