@@ -1,4 +1,4 @@
-const CACHE_NAME = "marble-granite-calculator-v6";
+const CACHE_NAME = "marble-granite-calculator-v7";
 const APP_SHELL = [
   "./",
   "./index.html",
