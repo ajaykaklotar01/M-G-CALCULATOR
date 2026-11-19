@@ -3,7 +3,7 @@
 A lightweight, mobile-friendly calculator for converting marble and granite dimensions from inches to square feet.
 
 ## Calculation method
-Convert each dimension separately, rounding any remaining inches UP in 3-inch steps:
+Convert each dimension separately using these exact inclusive boundaries for the remaining inches:
 - 1–3 inches → 0.25 ft
 - More than 3 up to 6 inches → 0.50 ft
 - More than 6 up to 9 inches → 0.75 ft
