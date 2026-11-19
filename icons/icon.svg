@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="104" fill="#f5f6f2"/>
+<rect x="54" y="54" width="404" height="404" rx="72" fill="#fff" stroke="#7d927f" stroke-width="8"/>
+<path d="M145 150h84v212h-84z" fill="#202522"/>
+<path d="M283 150h84v212h-84z" fill="#7d927f"/>
+<path d="M229 150h54v212h-54z" fill="#f5f6f2"/>
+<text x="256" y="425" text-anchor="middle" font-family="Georgia,serif" font-size="32" fill="#536b58">M &amp; G</text>
+</svg>
