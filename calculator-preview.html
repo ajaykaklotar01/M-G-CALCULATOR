@@ -30,6 +30,7 @@ body{min-height:100dvh}
 .left-controls{min-width:0;display:flex;flex-direction:column;gap:8px}
 .total{min-height:60px;border:1px solid #a7d8d0;box-shadow:0 0 7px #079b8d44;border-radius:4px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;background:#fff}
 .total-label{font-size:13px;font-weight:800;white-space:nowrap}
+.total-quantity{font-size:11px;font-weight:800;color:var(--teal);margin-top:2px;white-space:nowrap}
 .total-value{font-size:clamp(19px,5.2vw,25px);font-weight:800;color:#16814d;white-space:nowrap}
 .keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
 .key{height:clamp(46px,7.4vh,60px);border:0;border-radius:11px;background:var(--key);color:#10121a;font-size:clamp(25px,6.5vw,35px);font-weight:700;cursor:pointer}
@@ -67,7 +68,7 @@ body{min-height:100dvh}
     <div class="controls">
       <div class="left-controls">
         <div class="total">
-          <span class="total-label">FINAL TOTAL</span>
+          <div><div class="total-label">FINAL TOTAL</div><div class="total-quantity" id="totalQuantity">Q = 1</div></div>
           <span class="total-value" id="grandTotal">0.00 sq ft</span>
         </div>
         <div class="keypad" id="keypad">
@@ -122,7 +123,10 @@ function escapeText(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&a
 function render(){
   list.innerHTML="";
   let total=0;
+  let totalQuantity=0;
   rows.forEach((row,index)=>{
+    const quantity=Number(row.pieces);
+    if(row.pieces!==""&&Number.isFinite(quantity)&&quantity>0&&Number.isInteger(quantity))totalQuantity+=quantity;
     const result=rowResult(row);
     if(result!==null)total+=result;
     const card=document.createElement("article");
@@ -142,6 +146,7 @@ function render(){
     list.appendChild(card);
   });
   $("grandTotal").textContent=format(total)+" sq ft";
+  $("totalQuantity").textContent="Q = "+totalQuantity;
   const active=rows.find(row=>row.id===activeId)||rows[0];
   if(active){
     $("activeLength").textContent=active.length||"—";
