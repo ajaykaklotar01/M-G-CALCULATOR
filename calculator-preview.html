@@ -13,35 +13,35 @@ body{min-height:100dvh}
 .app{height:100dvh;max-width:760px;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:#f1f2f6}
 .measurements{flex:1;min-height:110px;overflow:auto;padding:14px 16px 12px}
 .measurement-list{display:flex;flex-direction:column;gap:8px}
-.measurement{background:#fff;border:1px solid #e5e6e9;border-radius:16px;padding:13px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto 32px;gap:12px;align-items:center}
+.measurement{background:#fff;border:1px solid #e5e6e9;border-radius:14px;padding:8px 11px;display:grid;grid-template-columns:minmax(0,1fr) auto 28px;gap:8px;align-items:center}
 .measurement.active{border-color:#b9d9d3;box-shadow:0 0 0 2px #079b8d12}
-.measurement-title{font-size:17px;font-weight:800;margin-bottom:9px}
-.measurement-summary{font-size:16px;color:#777b82;line-height:1.25}
-.measurement-caption{font-size:13px;color:#a1a3a8;margin-top:1px}
-.measurement-result{font-size:17px;font-weight:800;white-space:nowrap;text-align:right}
-.delete{border:0;background:transparent;color:#b7b9bf;font-size:31px;line-height:1;cursor:pointer;padding:0}
-.entry-area{background:#fff;border-top:1px solid #e4e5e9;border-radius:22px 22px 0 0;padding:16px 16px max(14px,env(safe-area-inset-bottom));box-shadow:0 -3px 12px #17191d08}
-.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:8px 4px 14px}
-.field{min-width:0;border:2px solid transparent;border-radius:17px;background:#f1f1f2;padding:13px 12px 10px;min-height:100px;cursor:pointer}
+.measurement-title{font-size:15px;font-weight:800;margin-bottom:4px}
+.measurement-summary{font-size:14px;color:#777b82;line-height:1.15}
+.measurement-caption{font-size:11px;color:#a1a3a8;margin-top:1px}
+.measurement-result{font-size:15px;font-weight:800;white-space:nowrap;text-align:right}
+.delete{border:0;background:transparent;color:#b7b9bf;font-size:27px;line-height:1;cursor:pointer;padding:0}
+.entry-area{background:#fff;border-top:1px solid #e4e5e9;border-radius:22px 22px 0 0;padding:10px 16px max(8px,env(safe-area-inset-bottom));box-shadow:0 -3px 12px #17191d08}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:3px 2px 8px}
+.field{min-width:0;border:2px solid transparent;border-radius:15px;background:#f1f1f2;padding:8px 10px 6px;min-height:76px;cursor:pointer}
 .field.selected{border-color:#079b8d;background:#f4fbf9;box-shadow:0 0 0 2px #079b8d12}
 .field-label{font-size:clamp(12px,3.5vw,16px);letter-spacing:.4px;color:#777b80;white-space:nowrap}
-.field-value{font-size:clamp(28px,8vw,40px);font-weight:700;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.controls{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:12px;align-items:stretch}
-.left-controls{min-width:0;display:flex;flex-direction:column;gap:12px}
-.total{min-height:76px;border:1px solid #a7d8d0;box-shadow:0 0 8px #079b8d55;border-radius:4px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff}
-.total-label{font-size:15px;font-weight:800;white-space:nowrap}
-.total-value{font-size:clamp(22px,6vw,29px);font-weight:800;color:#16814d;white-space:nowrap}
+.field-value{font-size:clamp(25px,7vw,34px);font-weight:700;line-height:1.2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.controls{display:grid;grid-template-columns:minmax(0,1fr) 74px;gap:10px;align-items:stretch}
+.left-controls{min-width:0;display:flex;flex-direction:column;gap:8px}
+.total{min-height:60px;border:1px solid #a7d8d0;box-shadow:0 0 7px #079b8d44;border-radius:4px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between;gap:6px;background:#fff}
+.total-label{font-size:13px;font-weight:800;white-space:nowrap}
+.total-value{font-size:clamp(19px,5.2vw,25px);font-weight:800;color:#16814d;white-space:nowrap}
 .keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
-.key{height:clamp(56px,10.2vh,76px);border:0;border-radius:12px;background:var(--key);color:#10121a;font-size:clamp(27px,7vw,39px);font-weight:700;cursor:pointer}
+.key{height:clamp(46px,7.4vh,60px);border:0;border-radius:11px;background:var(--key);color:#10121a;font-size:clamp(25px,6.5vw,35px);font-weight:700;cursor:pointer}
 .key:active,.action:active{filter:brightness(.94)}
 .key.zero{grid-column:span 2}
-.side-controls{display:grid;grid-template-rows:1.12fr repeat(4,1fr);gap:9px}
+.side-controls{display:grid;grid-template-rows:1.05fr repeat(4,1fr);gap:7px}
 .action{border:0;border-radius:12px;background:#ccc;color:#fff;font-size:clamp(25px,7vw,40px);font-weight:700;cursor:pointer}
-.action.add{background:var(--teal);font-size:clamp(20px,5.5vw,30px);letter-spacing:.5px}
+.action.add{background:var(--teal);font-size:clamp(18px,5vw,26px);letter-spacing:.5px}
 .action.reset{background:#777f83;font-size:15px;letter-spacing:.3px}
-.action.dummy{background:#ccc;color:#fff;cursor:default;pointer-events:none}
-.action.equals{background:var(--teal);font-size:34px}
-.helper{font-size:10px;color:#a0a2a7;margin-top:4px}
+.action.dummy{background:#ccc;color:#fff;cursor:default;pointer-events:none}\n.action.backspace{background:#ccc;color:#fff;font-size:clamp(23px,6vw,31px)}
+.action.equals{background:var(--teal);font-size:27px}
+.helper{font-size:9px;color:#a0a2a7;margin-top:2px}
 @media(min-width:600px){.app{border-left:1px solid #e5e6e9;border-right:1px solid #e5e6e9}.measurements{padding-left:24px;padding-right:24px}.entry-area{padding-left:24px;padding-right:24px}.controls{grid-template-columns:minmax(0,1fr) 100px}.field{min-height:112px}}
 @media(max-height:680px){.field{min-height:76px;padding:8px}.fields{padding-bottom:9px}.entry-area{padding-top:10px}.key{height:clamp(43px,8.7vh,60px)}.left-controls{gap:8px}.keypad,.side-controls{gap:7px}.total{min-height:60px}}
 </style>
@@ -79,13 +79,13 @@ body{min-height:100dvh}
       </div>
       <div class="side-controls">
         <button class="action add" id="add" type="button">ADD</button>
-        <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">×</button>
+        <button class="action backspace" id="backspace" type="button" aria-label="Delete last digit">×</button>
         <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">−</button>
         <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">+</button>
         <button class="action equals" id="equals" type="button" aria-label="Update total">=</button>
       </div>
     </div>
-    <button class="action reset" id="reset" type="button" style="width:100%;height:38px;margin-top:9px">RESET ALL</button>
+    <button class="action reset" id="reset" type="button" style="width:100%;height:30px;margin-top:7px">RESET ALL</button>
   </section>
 </main>
 <script>
@@ -174,7 +174,7 @@ $("keypad").addEventListener("click",event=>{
   const button=event.target.closest("[data-key]");
   if(button)enterKey(button.dataset.key);
 });
-$("add").addEventListener("click",addRow);
+$("add").addEventListener("click",addRow);\n$("backspace").addEventListener("click",()=>{\n  const row=rows.find(item=>item.id===activeId);\n  if(!row)return;\n  const current=row[activeField]||"";\n  if(current.length>0){row[activeField]=current.slice(0,-1);if(activeField==="pieces"&&row[activeField]==="")row[activeField]="1";render();}\n});
 $("reset").addEventListener("click",()=>{
   rows=[{id:1,length:"",width:"",pieces:"1"}];nextId=2;activeId=1;activeField="length";render();
 });
