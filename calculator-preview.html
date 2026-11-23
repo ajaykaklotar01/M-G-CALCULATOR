@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f1f2f6">
+<title>Calculator UI Preview</title>
+<style>
+:root{color-scheme:light;--ink:#17191d;--muted:#92949a;--panel:#f0f1f5;--key:#f0f1f5;--teal:#079b8d;--line:#e5e6ea}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f1f2f6}
+body{min-height:100dvh}
+.app{height:100dvh;max-width:760px;margin:0 auto;display:flex;flex-direction:column;overflow:hidden;background:#f1f2f6}
+.measurements{flex:1;min-height:110px;overflow:auto;padding:14px 16px 12px}
+.measurement-list{display:flex;flex-direction:column;gap:8px}
+.measurement{background:#fff;border:1px solid #e5e6e9;border-radius:16px;padding:13px 14px;display:grid;grid-template-columns:minmax(0,1fr) auto 32px;gap:12px;align-items:center}
+.measurement.active{border-color:#b9d9d3;box-shadow:0 0 0 2px #079b8d12}
+.measurement-title{font-size:17px;font-weight:800;margin-bottom:9px}
+.measurement-summary{font-size:16px;color:#777b82;line-height:1.25}
+.measurement-caption{font-size:13px;color:#a1a3a8;margin-top:1px}
+.measurement-result{font-size:17px;font-weight:800;white-space:nowrap;text-align:right}
+.delete{border:0;background:transparent;color:#b7b9bf;font-size:31px;line-height:1;cursor:pointer;padding:0}
+.entry-area{background:#fff;border-top:1px solid #e4e5e9;border-radius:22px 22px 0 0;padding:16px 16px max(14px,env(safe-area-inset-bottom));box-shadow:0 -3px 12px #17191d08}
+.fields{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:8px 4px 14px}
+.field{min-width:0;border:2px solid transparent;border-radius:17px;background:#f1f1f2;padding:13px 12px 10px;min-height:100px;cursor:pointer}
+.field.selected{border-color:#079b8d;background:#f4fbf9;box-shadow:0 0 0 2px #079b8d12}
+.field-label{font-size:clamp(12px,3.5vw,16px);letter-spacing:.4px;color:#777b80;white-space:nowrap}
+.field-value{font-size:clamp(28px,8vw,40px);font-weight:700;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.controls{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:12px;align-items:stretch}
+.left-controls{min-width:0;display:flex;flex-direction:column;gap:12px}
+.total{min-height:76px;border:1px solid #a7d8d0;box-shadow:0 0 8px #079b8d55;border-radius:4px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff}
+.total-label{font-size:15px;font-weight:800;white-space:nowrap}
+.total-value{font-size:clamp(22px,6vw,29px);font-weight:800;color:#16814d;white-space:nowrap}
+.keypad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+.key{height:clamp(56px,10.2vh,76px);border:0;border-radius:12px;background:var(--key);color:#10121a;font-size:clamp(27px,7vw,39px);font-weight:700;cursor:pointer}
+.key:active,.action:active{filter:brightness(.94)}
+.key.zero{grid-column:span 2}
+.side-controls{display:grid;grid-template-rows:1.12fr repeat(4,1fr);gap:9px}
+.action{border:0;border-radius:12px;background:#ccc;color:#fff;font-size:clamp(25px,7vw,40px);font-weight:700;cursor:pointer}
+.action.add{background:var(--teal);font-size:clamp(20px,5.5vw,30px);letter-spacing:.5px}
+.action.reset{background:#777f83;font-size:15px;letter-spacing:.3px}
+.action.dummy{background:#ccc;color:#fff;cursor:default;pointer-events:none}
+.action.equals{background:var(--teal);font-size:34px}
+.helper{font-size:10px;color:#a0a2a7;margin-top:4px}
+@media(min-width:600px){.app{border-left:1px solid #e5e6e9;border-right:1px solid #e5e6e9}.measurements{padding-left:24px;padding-right:24px}.entry-area{padding-left:24px;padding-right:24px}.controls{grid-template-columns:minmax(0,1fr) 100px}.field{min-height:112px}}
+@media(max-height:680px){.field{min-height:76px;padding:8px}.fields{padding-bottom:9px}.entry-area{padding-top:10px}.key{height:clamp(43px,8.7vh,60px)}.left-controls{gap:8px}.keypad,.side-controls{gap:7px}.total{min-height:60px}}
+</style>
+</head>
+<body>
+<main class="app">
+  <section class="measurements" aria-label="Measurement list">
+    <div class="measurement-list" id="measurementList"></div>
+  </section>
+  <section class="entry-area" aria-label="Calculator keypad">
+    <div class="fields">
+      <div class="field selected" data-select="length" role="button" tabindex="0" aria-label="Select length">
+        <div class="field-label">LENGTH</div><div class="field-value" id="activeLength">—</div>
+      </div>
+      <div class="field" data-select="width" role="button" tabindex="0" aria-label="Select width">
+        <div class="field-label">WIDTH</div><div class="field-value" id="activeWidth">—</div>
+      </div>
+      <div class="field" data-select="pieces" role="button" tabindex="0" aria-label="Select quantity">
+        <div class="field-label">QUANTITY</div><div class="field-value" id="activePieces">1</div>
+      </div>
+    </div>
+    <div class="controls">
+      <div class="left-controls">
+        <div class="total">
+          <span class="total-label">FINAL TOTAL</span>
+          <span class="total-value" id="grandTotal">0.00 sq ft</span>
+        </div>
+        <div class="keypad" id="keypad">
+          <button class="key" data-key="7">7</button><button class="key" data-key="8">8</button><button class="key" data-key="9">9</button>
+          <button class="key" data-key="4">4</button><button class="key" data-key="5">5</button><button class="key" data-key="6">6</button>
+          <button class="key" data-key="1">1</button><button class="key" data-key="2">2</button><button class="key" data-key="3">3</button>
+          <button class="key zero" data-key="0">0</button><button class="key" data-key=".">.</button>
+        </div>
+        <div class="helper" id="status" aria-live="polite">Tap a field, then use the number pad.</div>
+      </div>
+      <div class="side-controls">
+        <button class="action add" id="add" type="button">ADD</button>
+        <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">×</button>
+        <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">−</button>
+        <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">+</button>
+        <button class="action equals" id="equals" type="button" aria-label="Update total">=</button>
+      </div>
+    </div>
+    <button class="action reset" id="reset" type="button" style="width:100%;height:38px;margin-top:9px">RESET ALL</button>
+  </section>
+</main>
+<script>
+(function(){
+"use strict";
+const $=id=>document.getElementById(id);
+const list=$("measurementList");
+let rows=[];
+let nextId=1;
+let activeId=1;
+let activeField="length";
+const fields=["length","width","pieces"];
+function inchesToFeet(inches){
+  const wholeFeet=Math.floor(inches/12);
+  const remainder=inches-wholeFeet*12;
+  if(remainder===0)return wholeFeet;
+  if(remainder<=3)return wholeFeet+0.25;
+  if(remainder<=6)return wholeFeet+0.50;
+  if(remainder<=9)return wholeFeet+0.75;
+  return wholeFeet+1.00;
+}
+function roundToTwo(value){return Math.floor((value+Number.EPSILON)*100+0.5)/100;}
+function format(value){return roundToTwo(value).toFixed(2);}
+function rowResult(row){
+  if(row.length===""&&row.width==="")return null;
+  if(row.length===""||row.width==="")return null;
+  const length=Number(row.length),width=Number(row.width),pieces=Number(row.pieces);
+  if(!Number.isFinite(length)||!Number.isFinite(width)||length<=0||width<=0||!Number.isInteger(pieces)||pieces<1)return null;
+  return inchesToFeet(length)*inchesToFeet(width)*pieces;
+}
+function escapeText(value){return String(value).replace(/[&<>"']/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));}
+function render(){
+  list.innerHTML="";
+  let total=0;
+  rows.forEach(row=>{
+    const result=rowResult(row);
+    if(result!==null)total+=result;
+    const card=document.createElement("article");
+    card.className="measurement"+(row.id===activeId?" active":"");
+    const summary=(row.length||"—")+" × "+(row.width||"—")+" × "+(row.pieces||"1");
+    card.innerHTML='<div><div class="measurement-title">INPUT '+row.id+'</div><div class="measurement-summary">'+escapeText(summary)+'</div><div class="measurement-caption">L × W × Q</div></div><div class="measurement-result">'+(result===null?"—":format(result)+" sq ft")+'</div><button class="delete" type="button" aria-label="Remove input '+row.id+'">×</button>';
+    card.addEventListener("click",event=>{
+      if(event.target.closest(".delete"))return;
+      activeId=row.id;activeField="length";render();
+    });
+    card.querySelector(".delete").addEventListener("click",()=>{
+      if(rows.length===1){rows[0]={id:1,length:"",width:"",pieces:"1"};nextId=2;activeId=1;activeField="length";}
+      else{rows=rows.filter(item=>item.id!==row.id);if(activeId===row.id){activeId=rows[0].id;activeField="length";}}
+      render();
+    });
+    list.appendChild(card);
+  });
+  $("grandTotal").textContent=format(total)+" sq ft";
+  const active=rows.find(row=>row.id===activeId)||rows[0];
+  if(active){
+    $("activeLength").textContent=active.length||"—";
+    $("activeWidth").textContent=active.width||"—";
+    $("activePieces").textContent=active.pieces||"1";
+  }
+  document.querySelectorAll(".field").forEach(el=>el.classList.toggle("selected",el.dataset.select===activeField));
+}
+function addRow(){
+  const row={id:nextId++,length:"",width:"",pieces:"1"};
+  rows.push(row);activeId=row.id;activeField="length";render();
+}
+function enterKey(value){
+  const row=rows.find(item=>item.id===activeId);
+  if(!row)return;
+  let current=row[activeField]||"";
+  if(value==="."){
+    if(current.includes("."))return;
+    current=current===""?"0.":current+".";
+  }else{
+    if(current==="0")current=value;
+    else current+=value;
+  }
+  row[activeField]=current;
+  render();
+}
+document.querySelectorAll(".field").forEach(el=>{
+  const select=()=>{activeField=el.dataset.select;render();};
+  el.addEventListener("click",select);
+  el.addEventListener("keydown",event=>{if(event.key==="Enter"||event.key===" "){event.preventDefault();select();}});
+});
+$("keypad").addEventListener("click",event=>{
+  const button=event.target.closest("[data-key]");
+  if(button)enterKey(button.dataset.key);
+});
+$("add").addEventListener("click",addRow);
+$("reset").addEventListener("click",()=>{
+  rows=[{id:1,length:"",width:"",pieces:"1"}];nextId=2;activeId=1;activeField="length";render();
+});
+$("equals").addEventListener("click",render);
+rows=[{id:1,length:"",width:"",pieces:"1"}];
+render();
+})();
+</script>
+</body>
+</html>
