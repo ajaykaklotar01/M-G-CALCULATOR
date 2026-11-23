@@ -127,7 +127,7 @@ function render(){
     if(result!==null)total+=result;
     const card=document.createElement("article");
     card.className="measurement"+(row.id===activeId?" active":"");
-    const summary=(row.length||"—")+" × "+(row.width||"—")+" × "+(row.pieces||"1");
+    const summary=(row.length||"—")+" × "+(row.width||"—")+" × "+(row.pieces===""?"—":row.pieces);
     const feetSummary=row.length!==""&&row.width!==""?formatFeet(inchesToFeet(Number(row.length)))+" × "+formatFeet(inchesToFeet(Number(row.width))):"L × W (ft)";
     card.innerHTML='<div><div class="measurement-title">INPUT '+(index+1)+'</div><div class="measurement-summary">'+escapeText(summary)+'</div><div class="measurement-caption">'+escapeText(feetSummary)+'</div></div><button class="delete" type="button" aria-label="Remove input '+(index+1)+'">×</button>';
     card.addEventListener("click",event=>{
@@ -146,13 +146,19 @@ function render(){
   if(active){
     $("activeLength").textContent=active.length||"—";
     $("activeWidth").textContent=active.width||"—";
-    $("activePieces").textContent=active.pieces||"1";
+    $("activePieces").textContent=active.pieces===""?"—":active.pieces;
   }
   document.querySelectorAll(".field").forEach(el=>el.classList.toggle("selected",el.dataset.select===activeField));
 }
 function addRow(){
-  const current=rows.find(item=>item.id===activeId);
-  if(!current||rowResult(current)===null){$("status").textContent="Enter valid length and width before adding the next input.";return;}
+  const incomplete=rows.find(row=>rowResult(row)===null);
+  if(incomplete){
+    activeId=incomplete.id;
+    activeField=incomplete.length===""?"length":incomplete.width===""?"width":"pieces";
+    render();
+    $("status").textContent="Complete INPUT "+(rows.indexOf(incomplete)+1)+" before adding another input.";
+    return;
+  }
   const row={id:nextId++,length:"",width:"",pieces:"1"};
   rows.push(row);activeId=row.id;activeField="length";render();$("status").textContent="INPUT "+rows.length+" added. Enter its length and width.";
 }
@@ -184,7 +190,7 @@ $("backspace").addEventListener("click",()=>{
   const row=rows.find(item=>item.id===activeId);
   if(!row)return;
   const current=row[activeField]||"";
-  if(current.length>0){row[activeField]=current.slice(0,-1);if(activeField==="pieces"&&row[activeField]==="")row[activeField]="1";render();}
+  if(current.length>0){row[activeField]=current.slice(0,-1);render();}
 });
 $("reset").addEventListener("click",()=>{
   rows=[{id:1,length:"",width:"",pieces:"1"}];nextId=2;activeId=1;activeField="length";render();
