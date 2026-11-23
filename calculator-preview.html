@@ -39,7 +39,8 @@ body{min-height:100dvh}
 .action{border:0;border-radius:12px;background:#ccc;color:#fff;font-size:clamp(25px,7vw,40px);font-weight:700;cursor:pointer}
 .action.add{background:var(--teal);font-size:clamp(18px,5vw,26px);letter-spacing:.5px}
 .action.reset{background:#777f83;font-size:15px;letter-spacing:.3px}
-.action.dummy{background:#ccc;color:#fff;cursor:default;pointer-events:none}\n.action.backspace{background:#ccc;color:#fff;font-size:clamp(23px,6vw,31px)}
+.action.dummy{background:#ccc;color:#fff;cursor:default;pointer-events:none}
+.action.backspace{background:#ccc;color:#fff;font-size:clamp(23px,6vw,31px)}
 .action.equals{background:var(--teal);font-size:27px}
 .helper{font-size:9px;color:#a0a2a7;margin-top:2px}
 @media(min-width:600px){.app{border-left:1px solid #e5e6e9;border-right:1px solid #e5e6e9}.measurements{padding-left:24px;padding-right:24px}.entry-area{padding-left:24px;padding-right:24px}.controls{grid-template-columns:minmax(0,1fr) 100px}.field{min-height:112px}}
@@ -174,7 +175,13 @@ $("keypad").addEventListener("click",event=>{
   const button=event.target.closest("[data-key]");
   if(button)enterKey(button.dataset.key);
 });
-$("add").addEventListener("click",addRow);\n$("backspace").addEventListener("click",()=>{\n  const row=rows.find(item=>item.id===activeId);\n  if(!row)return;\n  const current=row[activeField]||"";\n  if(current.length>0){row[activeField]=current.slice(0,-1);if(activeField==="pieces"&&row[activeField]==="")row[activeField]="1";render();}\n});
+$("add").addEventListener("click",addRow);
+$("backspace").addEventListener("click",()=>{
+  const row=rows.find(item=>item.id===activeId);
+  if(!row)return;
+  const current=row[activeField]||"";
+  if(current.length>0){row[activeField]=current.slice(0,-1);if(activeField==="pieces"&&row[activeField]==="")row[activeField]="1";render();}
+});
 $("reset").addEventListener("click",()=>{
   rows=[{id:1,length:"",width:"",pieces:"1"}];nextId=2;activeId=1;activeField="length";render();
 });
