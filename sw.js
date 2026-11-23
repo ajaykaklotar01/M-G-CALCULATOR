@@ -1,9 +1,7 @@
-const CACHE_NAME = "marble-granite-calculator-v11";
+const CACHE_NAME = "marble-granite-calculator-v12";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./style.css",
-  "./script.js",
   "./manifest.webmanifest",
   "./icons/icon.svg"
 ];
