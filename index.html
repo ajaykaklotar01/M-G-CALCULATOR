@@ -172,7 +172,9 @@ function addRow(){
   const row={id:nextId++,length:"",width:"",pieces:"1"};
   rows.push(row);activeId=row.id;activeField="length";render();
   const measurementScroller=document.querySelector(".measurements");
-  measurementScroller.scrollTop=measurementScroller.scrollHeight;
+  requestAnimationFrame(()=>{
+    measurementScroller.scrollTop=measurementScroller.scrollHeight;
+  });
   $("status").textContent="INPUT "+rows.length+" added. Enter its length and width.";
 }
 function enterKey(value){
