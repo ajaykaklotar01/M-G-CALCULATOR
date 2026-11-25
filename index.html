@@ -128,10 +128,12 @@ function render(){
   let total=0;
   let totalQuantity=0;
   rows.forEach((row,index)=>{
-    const quantity=Number(row.pieces);
-    if(row.pieces!==""&&Number.isFinite(quantity)&&quantity>0&&Number.isInteger(quantity))totalQuantity+=quantity;
     const result=rowResult(row);
-    if(result!==null)total+=result;
+    if(result!==null){
+      total+=result;
+      const quantity=Number(row.pieces);
+      if(Number.isFinite(quantity)&&quantity>0&&Number.isInteger(quantity))totalQuantity+=quantity;
+    }
     const card=document.createElement("article");
     card.className="measurement"+(row.id===activeId?" active":"");
     const summary=(row.length||"—")+" × "+(row.width||"—")+" × "+(row.pieces===""?"—":row.pieces);
@@ -168,7 +170,10 @@ function addRow(){
     return;
   }
   const row={id:nextId++,length:"",width:"",pieces:"1"};
-  rows.push(row);activeId=row.id;activeField="length";render();$("status").textContent="INPUT "+rows.length+" added. Enter its length and width.";
+  rows.push(row);activeId=row.id;activeField="length";render();
+  const measurementScroller=document.querySelector(".measurements");
+  measurementScroller.scrollTop=measurementScroller.scrollHeight;
+  $("status").textContent="INPUT "+rows.length+" added. Enter its length and width.";
 }
 function enterKey(value){
   const row=rows.find(item=>item.id===activeId);
