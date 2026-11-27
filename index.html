@@ -42,6 +42,8 @@ body{min-height:100dvh}
 .side-controls{display:grid;grid-template-rows:repeat(5,1fr);gap:7px}
 .action{border:0;border-radius:12px;background:#ccc;color:#fff;font-size:clamp(25px,7vw,40px);font-weight:700;cursor:pointer}
 .action.add{background:var(--teal);font-size:clamp(18px,5vw,26px);letter-spacing:.5px}
+.action.equals-action{font-size:clamp(27px,7vw,38px);letter-spacing:0}
+.action.next-field{background:var(--teal);color:#fff;font-size:clamp(23px,6vw,31px)}
 .action.reset{background:#777f83;font-size:15px;letter-spacing:.3px}
 .action.dummy{background:#ccc;color:#fff;cursor:default;pointer-events:none}
 .action.backspace{background:var(--teal);color:#fff;font-size:clamp(23px,6vw,31px)}
@@ -85,9 +87,9 @@ body{min-height:100dvh}
       <div class="side-controls">
         <button class="action backspace" id="backspace" type="button" aria-label="Delete last digit">×</button>
         <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">−</button>
+        <button class="action next-field" id="nextField" type="button" aria-label="Select next field">×</button>
+        <button class="action add equals-action" id="add" type="button" aria-label="Add next input">=</button>
         <button class="action dummy" type="button" tabindex="-1" aria-disabled="true">+</button>
-        <button class="action equals" type="button" tabindex="-1" aria-disabled="true" aria-label="Disabled">=</button>
-        <button class="action add" id="add" type="button">ADD</button>
       </div>
     </div>
     <button class="action reset" id="reset" type="button" style="width:100%;height:30px;margin-top:7px">RESET ALL</button>
@@ -201,6 +203,19 @@ $("keypad").addEventListener("click",event=>{
   if(button)enterKey(button.dataset.key);
 });
 $("add").addEventListener("click",addRow);
+$("nextField").addEventListener("click",()=>{
+  const fieldOrder=["length","width","pieces"];
+  const currentIndex=fieldOrder.indexOf(activeField);
+  if(currentIndex<2){
+    activeField=fieldOrder[currentIndex+1];
+  }else{
+    const currentIndexInRows=rows.findIndex(item=>item.id===activeId);
+    const nextRow=rows[currentIndexInRows+1];
+    if(nextRow){activeId=nextRow.id;activeField="length";}
+    else{$("status").textContent="All fields selected. Tap = to add the next input.";}
+  }
+  render();
+});
 $("backspace").addEventListener("click",()=>{
   const row=rows.find(item=>item.id===activeId);
   if(!row)return;
