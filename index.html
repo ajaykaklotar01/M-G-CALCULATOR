@@ -146,7 +146,7 @@ function render(){
       activeId=row.id;activeField="length";render();
     });
     card.querySelector(".delete").addEventListener("click",()=>{
-      if(rows.length===1){rows[0]={id:1,length:"",width:"",pieces:"1"};nextId=2;activeId=1;activeField="length";}
+      if(rows.length===1){rows[0]={id:1,length:"",width:"",pieces:""};nextId=2;activeId=1;activeField="length";}
       else{rows=rows.filter(item=>item.id!==row.id);if(activeId===row.id){activeId=rows[0].id;activeField="length";}}
       render();
     });
@@ -171,7 +171,7 @@ function addRow(){
     $("status").textContent="Complete INPUT "+(rows.indexOf(incomplete)+1)+" before adding another input.";
     return;
   }
-  const row={id:nextId++,length:"",width:"",pieces:"1"};
+  const row={id:nextId++,length:"",width:"",pieces:""};
   rows.push(row);activeId=row.id;activeField="length";render();
   const measurementScroller=document.querySelector(".measurements");
   requestAnimationFrame(()=>{
@@ -223,9 +223,9 @@ $("backspace").addEventListener("click",()=>{
   if(current.length>0){row[activeField]=current.slice(0,-1);render();}
 });
 $("reset").addEventListener("click",()=>{
-  rows=[{id:1,length:"",width:"",pieces:"1"}];nextId=2;activeId=1;activeField="length";render();
+  rows=[{id:1,length:"",width:"",pieces:""}];nextId=2;activeId=1;activeField="length";render();
 });
-rows=[{id:1,length:"",width:"",pieces:"1"}];
+rows=[{id:1,length:"",width:"",pieces:""}];
 render();
 })();
 </script>
